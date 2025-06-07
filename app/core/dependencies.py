@@ -5,7 +5,7 @@ from typing import Generator
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer
 
-from app.core.config import settings, Settings, Settings
+from app.core.config import settings, Settings
 
 security = HTTPBearer(auto_error=False)
 
