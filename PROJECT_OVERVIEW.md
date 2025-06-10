@@ -1,10 +1,10 @@
 # FastAPI Agent Backend - Project Overview
 
-## Architecture
+## Architecture Overview
 
-This FastAPI application follows a clean architecture pattern with clear separation of concerns:
+This FastAPI application serves as a comprehensive backend for AI agent and tool management, featuring a modern Streamlit UI and leveraging LangChain for seamless integration with Large Language Models (LLMs), specifically Google Gemini. The architecture follows a modular, scalable design pattern that promotes separation of concerns and maintainability.
 
-### Directory Structure
+## Directory Structure
 ```
 flash/
 ├── app/                    # Main application package
@@ -23,56 +23,108 @@ flash/
 │   │   ├── agent_service.py # Agent management
 │   │   ├── chat_service.py  # Chat management
 │   │   └── llm_service.py   # LLM integration
+│   ├── streamlit_app.py  # Streamlit UI application
 │   └── utils/            # Utility functions
 │       ├── logger.py     # Logging utilities
 │       └── helpers.py    # Helper functions
 ├── tests/                # Test modules
+├── TODO.md              # Development roadmap and tasks
 └── main.py              # Application entry point
 ```
 
 ## Key Features
 
-### 1. Agent Management
-- Create, read, update, delete AI agents
+### 🎨 Modern UI Interface
+- **Streamlit-based Web UI**: Clean, responsive interface with navigation
+- **Agent Management**: Create agents with tool selection, edit existing agents
+- **Tool Management**: Comprehensive tool creation and management interface
+- **Modal Workflows**: User-friendly creation and editing forms
+- **Interactive Tables**: Easy-to-use data visualization and management
+- **Chat Interface**: Real-time chat functionality with agents
+- **System Monitoring**: Health and performance monitoring dashboard
+
+### 🤖 Enhanced Agent Management
+- Create, read, update, delete AI agents with full UI support
+- **Tool Association**: Assign multiple tools to agents during creation/editing
 - Configure agent parameters (temperature, max tokens, system prompts)
-- Support for different LLM models
-- Agent validation and testing
+- Agent-specific prompt templates and behaviors
+- Interactive table view with edit/delete functionality
+- Modal-based creation and editing workflows
 
-### 2. Chat System
+### 🛠️ Tool Management System
+- Create and manage various tool types (API Integration, File Handler, Calculator, etc.)
+- Tool categorization and organization (Utility, Data, Communication, Analysis)
+- Interactive tool management interface
+- Template-based tool creation (planned)
+- Code snippet association with tools (planned)
+
+### 💬 Chat System
 - Create chat sessions with specific agents
+- Agent selection for targeted conversations
 - Send messages and receive AI responses
-- Chat history management
-- Session management
+- Chat history management and session tracking
+- Real-time conversation interface
 
-### 3. LLM Integration
+### 🔧 LLM Integration
 - Google Gemini integration via LangChain
 - Configurable model parameters
-- Response time tracking
-- Token usage estimation
+- Response time tracking and token usage estimation
+- Tool-enhanced agent responses
+- Error handling and fallback mechanisms
 
-### 4. API Design
-- RESTful API design
-- Automatic OpenAPI documentation
-- Versioned API endpoints
-- Comprehensive error handling
+### 📊 Monitoring & Health
+- System health checks with visual indicators
+- Performance metrics (CPU, Memory usage)
+- API usage tracking and recent calls display
+- Real-time status monitoring dashboard
 
 ## Technology Stack
 
-- **FastAPI**: Modern, fast web framework
-- **Pydantic**: Data validation and serialization
-- **LangChain**: LLM integration framework
-- **Google Gemini**: AI language model
-- **Uvicorn**: ASGI server
-- **Python 3.8+**: Programming language
+- **Frontend**: Streamlit (Python-based web UI)
+- **Backend**: FastAPI (Modern, fast web framework)
+- **Data Validation**: Pydantic models for type safety
+- **LLM Integration**: LangChain + Google Gemini
+- **Server**: Uvicorn ASGI server
+- **Python**: 3.8+ with async/await support
+
+## Current Development Status
+
+### ✅ Completed Features
+- Complete Streamlit UI with navigation and multiple pages
+- Agent management UI with table view and modal forms
+- Tool management UI with creation and editing capabilities
+- Agent-tool association during creation and editing
+- Interactive agent and tool tables with functional edit/delete buttons
+- Modal-based creation workflows for improved UX
+- Chat interface with agent selection
+- System monitoring dashboard
+- Basic FastAPI backend structure
+
+### 🚧 In Progress (See TODO.md)
+- API-UI integration for real-time data synchronization
+- Database integration for persistent storage
+- Prompt generation system
+- File and code association with tools/agents
+
+### 📋 Planned Features
+- Complete API backend integration with UI
+- Database storage system (MongoDB/PostgreSQL evaluation)
+- Advanced prompt generator with template system
+- Code snippet and file association system
+- Template system for rapid agent/tool deployment
+- Enhanced security and authentication
+- Production deployment configuration
 
 ## Data Flow
 
-1. **Request**: Client sends HTTP request to API endpoint
-2. **Validation**: Pydantic models validate request data
-3. **Authentication**: Dependencies verify user access
-4. **Service Layer**: Business logic processes the request
-5. **LLM Integration**: If needed, service calls LLM via LangChain
-6. **Response**: Formatted response returned to client
+1. **UI Interaction**: User interacts with Streamlit interface
+2. **State Management**: Session state manages UI modals and forms
+3. **API Communication**: UI communicates with FastAPI backend (planned)
+4. **Validation**: Pydantic models validate all data
+5. **Service Layer**: Business logic processes requests
+6. **LLM Integration**: Services call LLM via LangChain when needed
+7. **Storage**: Data persisted to database (planned)
+8. **Response**: Results displayed in UI with real-time updates
 
 ## Configuration
 
@@ -87,11 +139,12 @@ The application uses environment variables for configuration:
 
 1. **Setup**: Run `./setup.sh` to create environment and install dependencies
 2. **Configure**: Edit `.env` file with your settings
-3. **Run**: Execute `./start.sh` or `python main.py`
-4. **Test**: Access API docs at `http://localhost:8000/docs`
-5. **Develop**: Make changes and restart (auto-reload in debug mode)
+3. **UI Development**: Run `streamlit run app/streamlit_app.py` for frontend
+4. **API Development**: Run `python main.py` for backend
+5. **Test**: Access API docs at `http://localhost:8000/docs`
+6. **Develop**: Make changes with auto-reload in debug mode
 
-## API Endpoints
+## API Endpoints (Backend)
 
 ### Health
 - `GET /health` - Basic health check
@@ -104,6 +157,13 @@ The application uses environment variables for configuration:
 - `GET /api/v1/agents` - List agents
 - `PUT /api/v1/agent/{id}` - Update agent
 - `DELETE /api/v1/agent/{id}` - Delete agent
+
+### Tools (Planned)
+- `POST /api/v1/tool` - Create tool
+- `GET /api/v1/tool/{id}` - Get tool
+- `GET /api/v1/tools` - List tools
+- `PUT /api/v1/tool/{id}` - Update tool
+- `DELETE /api/v1/tool/{id}` - Delete tool
 
 ### Chat
 - `POST /api/v1/chat/session` - Create chat session
@@ -118,19 +178,42 @@ The application uses environment variables for configuration:
 - User isolation (agents and chats are user-specific)
 - Input validation via Pydantic models
 - CORS configuration for web clients
+- Secure session state management in UI
 
 ## Scalability Notes
 
-- In-memory storage (replace with database for production)
-- Stateless design for horizontal scaling
+- Modular UI architecture for easy component scaling
+- Stateless backend design for horizontal scaling
 - Async/await for concurrent request handling
-- Modular architecture for easy extension
+- Database-ready architecture for data persistence
+- Separation of UI and API for independent scaling
 
-## Next Steps for Production
+## Next Development Phase
 
-1. **Database Integration**: Replace in-memory storage with PostgreSQL/MongoDB
-2. **Authentication**: Implement proper JWT/OAuth authentication
-3. **Caching**: Add Redis for session and response caching
-4. **Monitoring**: Add logging, metrics, and health checks
-5. **Deployment**: Containerize with Docker and deploy to cloud
-6. **Testing**: Expand test coverage and add integration tests
+The project is transitioning from UI prototype to full-stack application:
+
+1. **Database Integration**: Implementing persistent storage for agents and tools
+2. **API Connection**: Connecting Streamlit UI to FastAPI backend
+3. **Prompt Engineering**: Building advanced prompt generation capabilities
+4. **File Management**: Associating code snippets and files with tools/agents
+5. **Template System**: Creating reusable templates for rapid deployment
+6. **Production Readiness**: Authentication, monitoring, and deployment
+
+## Getting Started
+
+### For UI Development
+```bash
+streamlit run app/streamlit_app.py
+```
+
+### For API Development
+```bash
+python main.py
+# or
+uvicorn app.main:app --reload
+```
+
+### Full Stack Development
+Run both UI and API simultaneously for complete development experience.
+
+This architecture provides a solid foundation for building sophisticated AI agent systems with modern UI/UX while maintaining flexibility for future enhancements and scaling requirements. See `TODO.md` for detailed development roadmap and task tracking.

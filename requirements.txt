@@ -27,3 +27,6 @@ isort==5.13.2
 
 # Memory management (if needed)
 langmem==0.1.0
+
+# UI Basic
+streamlit==1.45.1

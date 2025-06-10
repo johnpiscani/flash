@@ -1,14 +1,43 @@
 # FastAPI Agent Backend
 
-A FastAPI-based backend service for AI agents using LangChain and Google Gemini integration.
+A comprehensive FastAPI-based backend service for AI agents and tools management, featuring a modern Streamlit UI and leveraging LangChain with Google Gemini integration.
 
-## Project Structure
+## 🚀 Features
+
+### 🎨 Modern Web Interface
+- **Streamlit UI**: Clean, responsive web interface with navigation
+- **Agent Management**: Create, edit, and manage AI agents with tool associations
+- **Tool Management**: Comprehensive tool creation and management system
+- **Chat Interface**: Real-time conversations with AI agents
+- **System Monitoring**: Health and performance monitoring dashboard
+- **Modal Workflows**: User-friendly creation and editing forms
+
+### 🤖 Agent & Tool Management
+- **Agent CRUD**: Full create, read, update, delete operations for agents
+- **Tool Integration**: Assign multiple tools to agents during creation/editing
+- **Interactive Tables**: Easy-to-use data visualization and management
+- **Template System**: Planned template-based creation for rapid deployment
+
+### 💬 Chat System
+- Real-time conversations with AI agents
+- Agent selection for targeted conversations
+- Chat history and session management
+- Context-aware responses with tool integration
+
+### 🔧 LLM Integration
+- Google Gemini API integration via LangChain
+- Configurable model parameters (temperature, max tokens)
+- Tool-enhanced agent responses
+- Error handling and fallback mechanisms
+
+## 🏗️ Project Structure
 
 ```
 flash/
 ├── app/
 │   ├── __init__.py
 │   ├── main.py                 # FastAPI application entry point
+│   ├── streamlit_app.py        # Streamlit UI application
 │   ├── api/
 │   │   ├── __init__.py
 │   │   └── v1/
@@ -36,6 +65,178 @@ flash/
 │   │   └── llm_service.py      # LLM integration service
 │   └── utils/
 │       ├── __init__.py
+│       ├── helpers.py          # Helper functions
+│       └── logger.py           # Logging utilities
+├── TODO.md                     # Development roadmap and tasks
+├── PROJECT_OVERVIEW.md         # Detailed project documentation
+├── .env.example               # Environment variables template
+└── requirements.txt           # Python dependencies
+```
+
+## 🛠️ Technology Stack
+
+- **Frontend**: Streamlit (Python-based web UI)
+- **Backend**: FastAPI (Modern, fast web framework)
+- **LLM Integration**: LangChain + Google Gemini
+- **Data Validation**: Pydantic models
+- **Async Support**: Full asynchronous request handling
+- **Documentation**: Automatic OpenAPI/Swagger documentation
+- **Configuration**: Environment variable-based configuration
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.8+
+- Google Gemini API key
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd flash
+   ```
+
+2. **Create virtual environment**
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Configure environment**
+   ```bash
+   cp .env.example .env
+   # Edit .env and add your GOOGLE_API_KEY
+   ```
+
+### Running the Application
+
+#### Streamlit UI (Frontend)
+```bash
+streamlit run app/streamlit_app.py
+```
+Access the UI at: `http://localhost:8501`
+
+#### FastAPI Backend
+```bash
+python app/main.py
+# or
+uvicorn app.main:app --reload
+```
+Access the API at: `http://localhost:8000`
+API Documentation: `http://localhost:8000/docs`
+
+#### Full Stack Development
+Run both applications simultaneously for complete development experience.
+
+## 📖 Usage
+
+### Agent Management
+1. Navigate to "Agent Management" in the sidebar
+2. Click "Create New Agent" to add a new agent
+3. Select tools to associate with the agent
+4. Use the interactive table to edit or delete existing agents
+
+### Tool Management
+1. Navigate to "Tool Management" in the sidebar
+2. Create new tools with specific types and categories
+3. Manage existing tools through the interactive interface
+
+### Chat Interface
+1. Go to "Chat Interface" in the sidebar
+2. Select an agent from the dropdown
+3. Start chatting with your AI agent
+4. View chat history and manage conversations
+
+### System Monitoring
+1. Check "System Monitoring" for health status
+2. View API performance metrics
+3. Monitor recent API calls and system resources
+
+## 🔧 API Endpoints
+
+### Health Checks
+- `GET /health` - Basic health check
+- `GET /api/v1/health` - API health check
+
+### Agents
+- `POST /api/v1/agent` - Create agent
+- `GET /api/v1/agent/{id}` - Get agent
+- `GET /api/v1/agents` - List agents
+- `PUT /api/v1/agent/{id}` - Update agent
+- `DELETE /api/v1/agent/{id}` - Delete agent
+
+### Chat
+- `POST /api/v1/chat/session` - Create chat session
+- `POST /api/v1/chat/message` - Send message
+- `GET /api/v1/chat/history/{session_id}` - Get chat history
+
+## 🔄 Development Status
+
+### ✅ Completed
+- Complete Streamlit UI with navigation and multiple pages
+- Agent management with tool association
+- Tool management interface
+- Interactive tables with edit/delete functionality
+- Modal-based creation workflows
+- Chat interface with agent selection
+- System monitoring dashboard
+- Basic FastAPI backend structure
+
+### 🚧 In Progress
+- API-UI integration for real-time data synchronization
+- Database integration for persistent storage
+- Prompt generation system
+
+### 📋 Planned (See TODO.md)
+- Complete backend API integration
+- Database storage system (MongoDB/PostgreSQL)
+- Advanced prompt generator with templates
+- File and code association system
+- Template system for rapid deployment
+- Enhanced security and authentication
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📋 Development Roadmap
+
+See `TODO.md` for a comprehensive list of planned features and improvements, including:
+- Database integration
+- API-UI connection
+- Prompt generation system
+- Template system
+- Enhanced security
+- Production deployment
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🆘 Support
+
+For support, please open an issue in the GitHub repository or contact the development team.
+
+---
+
+**Note**: This project is actively under development. See `PROJECT_OVERVIEW.md` for detailed architecture information and `TODO.md` for the development roadmap.ta models
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── agent_service.py    # Agent business logic
+│   │   ├── chat_service.py     # Chat business logic
+│   │   └── llm_service.py      # LLM integration service
+│   └── utils/
+│       ├── __init__.py
 │       ├── logger.py           # Logging utilities
 │       └── helpers.py          # Helper functions
 ├── tests/
@@ -47,6 +248,8 @@ flash/
 ├── main.py                     # Application runner
 ├── requirements.txt            # Python dependencies
 └── README.md                   # This file
+│   └── app/
+│       └── streamlit_app.py      # Streamlit UI Prototype
 ```
 
 ## Prerequisites
@@ -183,7 +386,21 @@ pip install package_name
 # Update requirements.txt
 pip freeze > requirements.txt
 ```
+### Streamlit UI Prototype
 
+A simple Streamlit-based UI prototype is available for quick interaction with the backend.
+
+#### Running the Streamlit UI
+
+```bash
+# Ensure Streamlit is installed
+pip install streamlit
+
+# Run the Streamlit app
+streamlit run app/streamlit_app.py
+```
+
+The Streamlit UI provides a basic interface for exploring agents and interacting with the backend. It serves as a lightweight frontend prototype before potential migration to more advanced frameworks like React or Angular.
 ## Environment Variables
 
 | Variable | Description | Default |
