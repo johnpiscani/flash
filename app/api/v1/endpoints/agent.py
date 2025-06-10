@@ -3,25 +3,36 @@
 from typing import List
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 
-from app.core.dependencies import get_current_user
 from app.models.agent import Agent, AgentCreate, AgentUpdate
 from app.services.agent_service import AgentService
 
 router = APIRouter()
 
+# Mock data for development
+mock_agents = []
+agent_counter = 1
 
-@router.post("/agent", response_model=Agent, status_code=status.HTTP_201_CREATED)
-async def create_agent(
-    agent_data: AgentCreate,
-    current_user: dict = Depends(get_current_user),
-    agent_service: AgentService = Depends(AgentService)
-):
+
+@router.post("/agents", response_model=dict, status_code=status.HTTP_201_CREATED)
+async def create_agent(agent_data: AgentCreate):
     """Create a new agent."""
+    global agent_counter
     try:
-        agent = await agent_service.create_agent(agent_data, current_user["user_id"])
-        return agent
+        # Create mock agent
+        agent_dict = {
+            "id": agent_counter,
+            "name": agent_data.name,
+            "model": agent_data.model,
+            "description": agent_data.description,
+            "tools": agent_data.tools or [],
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+        mock_agents.append(agent_dict)
+        agent_counter += 1
+        return agent_dict
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -29,14 +40,10 @@ async def create_agent(
         )
 
 
-@router.get("/agent/{agent_id}", response_model=Agent)
-async def get_agent(
-    agent_id: UUID,
-    current_user: dict = Depends(get_current_user),
-    agent_service: AgentService = Depends(AgentService)
-):
+@router.get("/agents/{agent_id}", response_model=dict)
+async def get_agent(agent_id: int):
     """Get agent by ID."""
-    agent = await agent_service.get_agent(agent_id, current_user["user_id"])
+    agent = next((a for a in mock_agents if a["id"] == agent_id), None)
     if not agent:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -45,53 +52,46 @@ async def get_agent(
     return agent
 
 
-@router.get("/agents", response_model=List[Agent])
-async def list_agents(
-    skip: int = 0,
-    limit: int = 100,
-    current_user: dict = Depends(get_current_user),
-    agent_service: AgentService = Depends(AgentService)
-):
-    """List all agents for the current user."""
-    agents = await agent_service.list_agents(
-        current_user["user_id"], 
-        skip=skip, 
-        limit=limit
-    )
-    return agents
+@router.get("/agents", response_model=List[dict])
+async def list_agents(skip: int = 0, limit: int = 100):
+    """List all agents."""
+    return mock_agents[skip:skip + limit]
 
 
-@router.put("/agent/{agent_id}", response_model=Agent)
-async def update_agent(
-    agent_id: UUID,
-    agent_update: AgentUpdate,
-    current_user: dict = Depends(get_current_user),
-    agent_service: AgentService = Depends(AgentService)
-):
+@router.put("/agents/{agent_id}", response_model=dict)
+async def update_agent(agent_id: int, agent_update: AgentUpdate):
     """Update an agent."""
-    agent = await agent_service.update_agent(
-        agent_id, 
-        agent_update, 
-        current_user["user_id"]
-    )
+    agent = next((a for a in mock_agents if a["id"] == agent_id), None)
     if not agent:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Agent not found"
         )
+    
+    # Update agent fields
+    if agent_update.name is not None:
+        agent["name"] = agent_update.name
+    if agent_update.model is not None:
+        agent["model"] = agent_update.model
+    if agent_update.description is not None:
+        agent["description"] = agent_update.description
+    if agent_update.tools is not None:
+        agent["tools"] = agent_update.tools
+    
+    agent["updated_at"] = "2024-01-01T00:00:00Z"
     return agent
 
 
-@router.delete("/agent/{agent_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_agent(
-    agent_id: UUID,
-    current_user: dict = Depends(get_current_user),
-    agent_service: AgentService = Depends(AgentService)
-):
+@router.delete("/agents/{agent_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_agent(agent_id: int):
     """Delete an agent."""
-    success = await agent_service.delete_agent(agent_id, current_user["user_id"])
-    if not success:
+    global mock_agents
+    agent = next((a for a in mock_agents if a["id"] == agent_id), None)
+    if not agent:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Agent not found"
         )
+    
+    mock_agents = [a for a in mock_agents if a["id"] != agent_id]
+    return None

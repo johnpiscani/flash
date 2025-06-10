@@ -2,7 +2,128 @@
 
 A comprehensive FastAPI-based backend service for AI agents and tools management, featuring a modern Streamlit UI and leveraging LangChain with Google Gemini integration.
 
-## 🚀 Features
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.8+
+- pip
+
+### Installation & Launch
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd <repository-name>
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Set up environment**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+
+4. **Launch the application**
+   ```bash
+   python launch.py
+   ```
+
+That's it! The application will start both the QastAPI backend (http://localhost:8000) and Struimlic frontend (http://localhost:8501).
+
+## 🎯 Featk Start
+
+### Prerequisites
+- Python 3.8+
+- pip
+
+### Installation & Launch
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd <repository-name>
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pip Chat System
+- **Agent Selection**: Choose from available agents for conversations
+- **Real-time ihat**: Interactive chat interface witn messsge history
+- **Tool Integration**: Agents can use assigned tools during conversations
+- **Session Management**: Persistent chat sessions and history
+
+### 📊 System Monitoring
+- **Health Checks**: Monitor API and system health
+- **Performance Metrics**: Track agent and tool usage
+- **Real-time Status**: Live system status updates
+
+## 📁 Project Structure
+
+```
+├── app/
+│   ├── api/v1/endpoints/     # API endpoints
+│   ├── components/           # Streamlit UI components
+│   ├── core/                 # Core configuration
+│   ├── models/               # Data models
+│   ├── services/             # Business logic
+│   ├── utils/                # Utilities
+│   ├── main.py              # FastAPI app
+│   └── streamlit_app.py     # Streamlit app
+├── launch.py                # Single command launcher
+├── main.py                  # FastAPI server launcher
+├── requirements.txt         # Dependencies
+└── README.md               # This file
+```
+
+## 🔧 Development
+
+### Running Components Separately
+
+**FastAPI Backend Only:**
+```bash
+python main.py
+```
+
+**Streamlit Frontend Only:**
+```bash
+streamlit run app/streamlit_app.py
+```
+
+### API Documentation
+- FastAPI Docs: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
+
+## 🛠️ Configuration
+
+Edit the `.env` file to configure:
+- API keys (Google Gemini, etc.)
+- Database settings
+- Debug mode
+- Port configurations
+
+## 📝 License
+
+This project is licensed under the MIT License.all -r requirements.txt
+   ```
+
+3. **Set up environment**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+
+4. **Launch the application**
+   ```bash
+   python launch.py
+   ```
+
+That's it! The application will start both the FastAPI backend (http://localhost:8000) and Streamlit frontend (http://localhost:8501).
+
+## 🎯 Features
 
 ### 🎨 Modern Web Interface
 - **Streamlit UI**: Clean, responsive web interface with navigation
@@ -19,6 +140,63 @@ A comprehensive FastAPI-based backend service for AI agents and tools management
 - **Template System**: Planned template-based creation for rapid deployment
 
 ### 💬 Chat System
+- **Agent Selection**: Choose from available agents for conversations
+- **Real-time Chat**: Interactive chat interface with message history
+- **Tool Integration**: Agents can use assigned tools during conversations
+- **Session Management**: Persistent chat sessions and history
+
+### 📊 System Monitoring
+- **Health Checks**: Monitor API and system health
+- **Performance Metrics**: Track agent and tool usage
+- **Real-time Status**: Live system status updates
+
+## 📁 Project Structure
+
+```
+├── app/
+│   ├── api/v1/endpoints/     # API endpoints
+│   ├── components/           # Streamlit UI components
+│   ├── core/                 # Core configuration
+│   ├── models/               # Data models
+│   ├── services/             # Business logic
+│   ├── utils/                # Utilities
+│   ├── main.py              # FastAPI app
+│   └── streamlit_app.py     # Streamlit app
+├── launch.py                # Single command launcher
+├── main.py                  # FastAPI server launcher
+├── requirements.txt         # Dependencies
+└── README.md               # This file
+```
+
+## 🔧 Development
+
+### Running Components Separately
+
+**FastAPI Backend Only:**
+```bash
+python main.py
+```
+
+**Streamlit Frontend Only:**
+```bash
+streamlit run app/streamlit_app.py
+```
+
+### API Documentation
+- FastAPI Docs: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
+
+## 🛠️ Configuration
+
+Edit the `.env` file to configure:
+- API keys (Google Gemini, etc.)
+- Database settings
+- Debug mode
+- Port configurations
+
+## 📝 License
+
+This project is licensed under the MIT License. System
 - Real-time conversations with AI agents
 - Agent selection for targeted conversations
 - Chat history and session management
@@ -87,7 +265,7 @@ flash/
 
 ### Prerequisites
 - Python 3.8+
-- Google Gemini API key
+- pip package manager (Google Gemini API key optional for advanced features)
 
 ### Installation
 
@@ -97,7 +275,7 @@ flash/
    cd flash
    ```
 
-2. **Create virtual environment**
+2. **Create virtual environment (recommended)**
    ```bash
    python -m venv .venv
    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
@@ -108,31 +286,49 @@ flash/
    pip install -r requirements.txt
    ```
 
-4. **Configure environment**
+4. **Configure environment (optional)**
    ```bash
    cp .env.example .env
-   # Edit .env and add your GOOGLE_API_KEY
+   # Edit .env and add your GOOGLE_API_KEY (optional)
    ```
 
 ### Running the Application
 
-#### Streamlit UI (Frontend)
+#### 🎯 **Recommended: Run Everything Together**
 ```bash
-streamlit run app/streamlit_app.py
+python run_app.py
 ```
-Access the UI at: `http://localhost:8501`
+This starts both the FastAPI backend and Streamlit frontend automatically.
 
-#### FastAPI Backend
+#### 🔧 **Alternative: Run Separately**
+
+**Backend (FastAPI):**
 ```bash
-python app/main.py
-# or
 uvicorn app.main:app --reload
 ```
-Access the API at: `http://localhost:8000`
-API Documentation: `http://localhost:8000/docs`
 
-#### Full Stack Development
-Run both applications simultaneously for complete development experience.
+**Frontend (Streamlit):**
+```bash
+python launch_streamlit.py
+```
+
+#### 🧪 **Troubleshooting Mode**
+```bash
+# Run diagnostics first
+python debug_setup.py
+
+# Test backend
+python test_backend.py
+
+# Test frontend
+python test_streamlit.py
+### 🌐 Access URLs
+
+Once running, access the application at:
+- 🎨 **Streamlit Frontend**: http://localhost:8501
+- 📡 **FastAPI Backend**: http://localhost:8000  
+- 📚 **API Documentation**: http://localhost:8000/docs
+- ❤️ **Health Check**: http://localhost:8000/health
 
 ## 📖 Usage
 
